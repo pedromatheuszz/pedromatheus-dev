@@ -45,80 +45,88 @@
   --dur: 220ms;
 }
 
-/* --- Tema escuro (padrão) --- */
+/* --- Tema escuro (padrão) ---
+   Cores extraídas dos pixels do logotipo: fundo #040404, branco #eff0f2 e
+   azul da marca #5460f0, cujo gradiente vai de #4878f0 a #6054fc. */
 :root,
 [data-theme="dark"] {
-  --bg:        #0b0c0f;
-  --bg-alt:    #0e1014;
-  --surface:   #14161b;
-  --surface-2: #1a1d23;
+  --bg:        #08090d;
+  --bg-alt:    #0b0d12;
+  --surface:   #10131a;
+  --surface-2: #171b24;
 
-  --ink:       #eceef1;
-  --ink-2:     #a6adb8;
-  --ink-3:     #6f7783;
+  --ink:       #eff0f2;   /* o branco do logotipo */
+  --ink-2:     #a4aab8;
+  --ink-3:     #7b8293;
 
-  --line:      #23262d;
-  --line-2:    #2e323b;
+  --line:      #212530;
+  --line-2:    #2c313e;
 
-  --a1:        #e8a33d;   /* âmbar  — acento principal */
-  --a1-soft:   rgba(232, 163, 61, 0.13);
-  --a2:        #58c5da;   /* ciano  — acento secundário */
-  --a2-soft:   rgba(88, 197, 218, 0.13);
-  --a3:        #e0745a;   /* terracota — terceiro eixo */
-  --a3-soft:   rgba(224, 116, 90, 0.13);
+  --a1:        #5460f0;   /* azul da marca — preenchimentos, botões, ícones */
+  --a1-soft:   rgba(84, 96, 240, 0.16);
+  /* O azul da marca rende 4.08:1 sobre este fundo, abaixo do mínimo AA de 4.5.
+     Para TEXTO usamos uma variação clareada da mesma cor: 6.24:1. */
+  --a1-text:   #7b86f6;
+  --a2:        #3ec2e8;   /* ciano — secundário, separa front de back */
+  --a2-soft:   rgba(62, 194, 232, 0.14);
+  --a3:        #e8a33d;   /* âmbar — contraponto quente ao azul */
+  --a3-soft:   rgba(232, 163, 61, 0.13);
   --ok:        #64c98a;
   --ok-soft:   rgba(100, 201, 138, 0.13);
   --on-ok:     #06110b;   /* texto sobre --ok: verde claro pede texto escuro */
 
-  --on-accent: #16120a;
-  --grid:      rgba(255, 255, 255, 0.032);
-  --shadow:    0 1px 2px rgba(0,0,0,.4), 0 12px 32px -12px rgba(0,0,0,.7);
-  --nav-bg:    rgba(11, 12, 15, 0.82);
+  --on-accent: #ffffff;
+  --grid:      rgba(255, 255, 255, 0.034);
+  --shadow:    0 1px 2px rgba(0,0,0,.5), 0 12px 32px -12px rgba(0,0,0,.75);
+  --nav-bg:    rgba(8, 9, 13, 0.82);
 
   /* Sintaxe do painel de código */
-  --c-key:  #d8899f;
-  --c-type: #58c5da;
-  --c-str:  #a9c98a;
-  --c-var:  #e8a33d;
-  --c-def:  #b9c0cb;
+  --c-key:  #b09cf8;
+  --c-type: #3ec2e8;
+  --c-str:  #9fcf8e;
+  --c-var:  #7d86f5;
+  --c-def:  #b7becb;
 
   color-scheme: dark;
 }
 
-/* --- Tema claro --- */
+/* --- Tema claro ---
+   O papel esfria de bege para cinza-azulado, acompanhando a marca. Os acentos
+   escurecem para manter contraste AA sobre fundo claro. */
 [data-theme="light"] {
-  --bg:        #f7f6f3;
+  --bg:        #f6f7fa;
   --bg-alt:    #ffffff;
   --surface:   #ffffff;
-  --surface-2: #f1efea;
+  --surface-2: #eef0f6;
 
-  --ink:       #14161a;
-  --ink-2:     #4d545e;
-  --ink-3:     #7c848f;
+  --ink:       #0f1116;
+  --ink-2:     #495062;
+  --ink-3:     #646b7a;
 
-  --line:      #e2ded6;
-  --line-2:    #cfcabf;
+  --line:      #e0e3ec;
+  --line-2:    #c8cddb;
 
-  --a1:        #a06209;
-  --a1-soft:   rgba(160, 98, 9, 0.10);
-  --a2:        #0e7f97;
-  --a2-soft:   rgba(14, 127, 151, 0.10);
-  --a3:        #b8503a;
-  --a3-soft:   rgba(184, 80, 58, 0.10);
+  --a1:        #3a44cc;   /* azul da marca, escurecido para o papel */
+  --a1-soft:   rgba(58, 68, 204, 0.10);
+  --a1-text:   #3a44cc;   /* no claro o próprio acento já rende 6.81:1 */
+  --a2:        #0c6f85;
+  --a2-soft:   rgba(12, 111, 133, 0.10);
+  --a3:        #8c5608;
+  --a3-soft:   rgba(140, 86, 8, 0.10);
   --ok:        #237a4a;
   --ok-soft:   rgba(35, 122, 74, 0.10);
   --on-ok:     #ffffff;   /* verde escuro pede texto claro */
 
   --on-accent: #ffffff;
-  --grid:      rgba(20, 22, 26, 0.045);
-  --shadow:    0 1px 2px rgba(30,26,20,.06), 0 14px 34px -16px rgba(30,26,20,.22);
-  --nav-bg:    rgba(247, 246, 243, 0.85);
+  --grid:      rgba(15, 17, 22, 0.045);
+  --shadow:    0 1px 2px rgba(20,24,40,.06), 0 14px 34px -16px rgba(20,24,40,.22);
+  --nav-bg:    rgba(246, 247, 250, 0.85);
 
-  --c-key:  #a33a63;
+  --c-key:  #6b34c9;
   --c-type: #0e6f85;
-  --c-str:  #4a7a2c;
-  --c-var:  #9a5f08;
-  --c-def:  #3a414b;
+  --c-str:  #43701f;
+  --c-var:  #3a44cc;
+  --c-def:  #39404b;
 
   color-scheme: light;
 }
@@ -272,7 +280,7 @@ p { text-wrap: pretty; }
   font-size: var(--fs-xs);
   letter-spacing: 0.02em;
 }
-.tag--a  { background: var(--a1-soft); color: var(--a1); }
+.tag--a  { background: var(--a1-soft); color: var(--a1-text); }
 .tag--b  { background: var(--a2-soft); color: var(--a2); }
 .tag--c  { background: var(--a3-soft); color: var(--a3); }
 .tag--ok { background: var(--ok-soft); color: var(--ok); }
@@ -305,7 +313,7 @@ p { text-wrap: pretty; }
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   font-weight: 700;
-  color: var(--a1);
+  color: var(--a1-text);
 }
 .sec-head__title {
   font-size: var(--fs-xl);
@@ -370,24 +378,26 @@ p { text-wrap: pretty; }
 
 .brand { display: flex; align-items: center; gap: 0.65rem; flex: none; }
 
+/* O logotipo foi desenhado sobre preto, então mantém seu próprio fundo escuro
+   nos dois temas — no claro ele vira um selo, que é como a marca se lê melhor. */
 .brand__mark {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   flex: none;
-  border: 1px solid var(--a1);
-  border-radius: 8px;
-  background: var(--a1-soft);
-  color: var(--a1);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: #040404;
+  object-fit: cover;
 }
+[data-theme="light"] .brand__mark { border-color: transparent; }
 
 .brand__text { display: flex; flex-direction: column; line-height: 1.25; }
-.brand__text strong { font-size: 0.9375rem; letter-spacing: -0.015em; }
+.brand__text strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.brand__tld { color: var(--a1-text); }
 .brand__text span {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
@@ -509,7 +519,7 @@ p { text-wrap: pretty; }
   margin-top: var(--sp-4);
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
-  color: var(--a1);
+  color: var(--a1-text);
   text-transform: uppercase;
   letter-spacing: 0.11em;
 }
@@ -768,7 +778,7 @@ p { text-wrap: pretty; }
   font-family: var(--font-mono);
   font-size: var(--fs-md);
   font-weight: 700;
-  color: var(--a1);
+  color: var(--a1-text);
   letter-spacing: -0.02em;
 }
 .service__body h3 {
@@ -846,7 +856,7 @@ p { text-wrap: pretty; }
   margin-top: var(--sp-2);
   font-size: var(--fs-sm);
   font-weight: 600;
-  color: var(--a1);
+  color: var(--a1-text);
 }
 .work__link .icon { transition: transform var(--dur) var(--ease); }
 .work__link:hover .icon { transform: translateX(4px); }
@@ -1030,7 +1040,7 @@ p { text-wrap: pretty; }
   overflow-wrap: anywhere;
   transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
-.contact__emailrow a:hover { color: var(--a1); border-color: var(--a1); }
+.contact__emailrow a:hover { color: var(--a1-text); border-color: var(--a1-text); }
 
 .copy-btn {
   display: inline-flex;
@@ -1155,7 +1165,7 @@ p { text-wrap: pretty; }
   gap: 0.35rem;
   transition: color var(--dur) var(--ease);
 }
-.footer__top:hover { color: var(--a1); }
+.footer__top:hover { color: var(--a1-text); }
 
 /* --------------------------------------------------------------------------
    8. RESPONSIVO
@@ -1188,7 +1198,7 @@ p { text-wrap: pretty; }
   .nav__links.is-open { opacity: 1; visibility: visible; transform: none; }
   .nav__links a { padding: 0.85rem 0; border-bottom: 1px solid var(--line); font-size: var(--fs-md); }
   .nav__links a::after { display: none; }
-  .nav__links a.is-active { color: var(--a1); }
+  .nav__links a.is-active { color: var(--a1-text); }
   .nav__burger { display: inline-flex; }
   .nav__cta { display: none; }
   .brand__text span { display: none; }

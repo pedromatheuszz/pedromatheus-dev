@@ -44,14 +44,10 @@ Para adicionar mais projetos, duplique o bloco `<article class="work">` inteiro.
 O grid se ajusta sozinho. As capas usam três variantes de cor: `work__cover--a`
 (âmbar), `--b` (ciano) e `--c` (terracota).
 
-### 2. URL canônica e imagem social
+### 2. URL canônica
 
-No `<head>`:
-
-- `<link rel="canonical" href="https://exemplo.com/">` → seu domínio real;
-- `<meta property="og:image" content="og-image.png">` → crie um `og-image.png`
-  de **1200×630 px** na raiz do projeto. Sem ele, o link compartilhado no
-  WhatsApp/LinkedIn aparece sem imagem.
+No `<head>`, troque `<link rel="canonical" href="https://exemplo.com/">` pelo
+seu domínio real.
 
 ### 3. Conferir os textos
 
@@ -119,23 +115,57 @@ var DESTINATARIO = 'pedromatheusdasilva123@gmail.com';
 
 ---
 
-## Personalizando o visual
+## Identidade visual
 
-Todas as cores, fontes e espaçamentos são variáveis CSS no topo do `styles.css`.
+### Arquivos gerados a partir do logotipo
 
-Trocar o acento principal (âmbar) em **ambos os temas**:
+| Arquivo | Tamanho | Onde é usado |
+|---------|---------|--------------|
+| `logo-mark.png` | 512×512 | Monograma no topo e no rodapé |
+| `logo.png` | 969×624 | Logotipo completo, para reuso |
+| `og-image.png` | 1200×630 | Prévia ao compartilhar o link |
+| `apple-touch-icon.png` | 180×180 | Ícone ao salvar na tela inicial |
+| `favicon.png` | 64×64 | Ícone da aba |
+
+Todos foram recortados do arquivo original. Para regerá-los depois de alterar o
+logotipo, os recortes usados foram: monograma em `x 354, y 309, 542×507` e
+logotipo completo em `x 183, y 343, 909×564`.
+
+O monograma mantém o fundo escuro do logotipo **nos dois temas**. Isso é
+intencional: o "P" é branco e sumiria sobre o papel claro. No tema claro ele
+funciona como um selo.
+
+### Paleta
+
+As cores vieram dos pixels do próprio logotipo:
+
+| Origem | Valor |
+|--------|-------|
+| Fundo do logotipo | `#040404` |
+| Branco do logotipo | `#eff0f2` |
+| Azul da marca | `#5460f0` |
+| Gradiente do "M" | `#4878f0` → `#6054fc` |
+
+Os tokens ficam no topo do `styles.css`:
 
 ```css
-[data-theme="dark"]  { --a1: #e8a33d; --a1-soft: rgba(232,163,61,.13); }
-[data-theme="light"] { --a1: #a06209; --a1-soft: rgba(160,98,9,.10); }
+[data-theme="dark"]  { --a1: #5460f0; --a1-text: #7b86f6; }
+[data-theme="light"] { --a1: #3a44cc; --a1-text: #3a44cc; }
 ```
 
-A paleta tem três eixos de acento — `--a1` (âmbar), `--a2` (ciano) e `--a3`
-(terracota) — usados nas tags de stack e nas capas de projeto. Mantenha os três
-distintos para o visual não achatar em uma cor só.
+**Por que dois tokens de azul.** O azul da marca rende apenas 4.08:1 sobre o
+fundo escuro, abaixo do mínimo de 4.5:1 da WCAG AA. `--a1` é usado em
+preenchimentos (botões, ícones, o ponto das etapas), onde a exigência é menor;
+`--a1-text` é uma variação clareada da mesma cor, com 6.24:1, usada em todo
+texto. Se trocar um, ajuste o outro e remeça o contraste.
+
+A paleta tem três eixos: `--a1` (azul da marca), `--a2` (ciano) e `--a3`
+(âmbar, contraponto quente). Mantenha os três distintos para o visual não
+achatar em uma cor só.
 
 O tema inicial segue a preferência do sistema operacional e é persistido em
-`localStorage` sob a chave `pm-theme`.
+`localStorage` sob a chave `pm-theme`. A meta tag `theme-color` lê `--bg` do
+CSS em tempo de execução, então não precisa ser atualizada à mão.
 
 ---
 

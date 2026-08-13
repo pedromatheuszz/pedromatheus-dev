@@ -36,8 +36,12 @@
     var toggle = document.getElementById('theme-toggle');
     if (toggle) toggle.setAttribute('aria-pressed', String(theme === 'light'));
 
+    // Lê a cor do próprio CSS em vez de repeti-la aqui: a paleta tem uma única
+    // fonte de verdade, e mudar os tokens não deixa esta meta tag para trás.
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f7f6f3' : '#0b0c0f');
+    if (!meta) return;
+    var bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    if (bg) meta.setAttribute('content', bg);
   }
 
   function initTheme() {

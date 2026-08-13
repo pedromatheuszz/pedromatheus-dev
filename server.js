@@ -70,10 +70,19 @@ function resolveSafePath(requestUrl) {
   return absolute;
 }
 
+// Imagens e fontes podem ser cacheadas com folga: mudam raramente e, quando
+// mudam, normalmente ganham outro nome de arquivo.
+const CACHE_LONGO = new Set([
+  '.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.ico', '.woff', '.woff2',
+]);
+
 function cacheControlFor(ext) {
-  // O HTML precisa revalidar para o conteúdo novo aparecer após um deploy.
-  if (ext === '.html' || ext === '') return 'no-cache';
-  return 'public, max-age=3600';
+  // HTML, CSS e JS mudam a cada deploy e são interdependentes: se o HTML for
+  // atualizado mas o CSS vier do cache, a página quebra. "no-cache" nao
+  // significa "nao cacheie" — significa "cacheie, mas revalide sempre".
+  // Com o ETag, a revalidacao custa um 304 vazio.
+  if (CACHE_LONGO.has(ext)) return 'public, max-age=86400';
+  return 'no-cache';
 }
 
 function sendError(res, status, message) {

@@ -186,6 +186,47 @@
   }
 
   /* ---------------------------------------------------------------------
+     Atalho flutuante do WhatsApp
+     Aparece após o hero e se esconde na seção de contato, onde o botão
+     principal já está na tela.
+     --------------------------------------------------------------------- */
+
+  function initWhatsAppFloat() {
+    var float = document.getElementById('wa-float');
+    if (!float) return;
+
+    var hero = document.getElementById('inicio');
+    // O alvo é o botão de WhatsApp da seção de contato, não a seção inteira:
+    // o flutuante só é redundante quando o botão real está na tela.
+    var ctaPrincipal = document.querySelector('.wa');
+
+    function update() {
+      var passouDoHero = hero ? hero.getBoundingClientRect().bottom < 80 : true;
+      var ctaNaTela = false;
+
+      if (ctaPrincipal) {
+        var rect = ctaPrincipal.getBoundingClientRect();
+        ctaNaTela = rect.top < window.innerHeight && rect.bottom > 0;
+      }
+
+      float.classList.toggle('is-shown', passouDoHero && !ctaNaTela);
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        update();
+        ticking = false;
+      });
+    }, { passive: true });
+
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  /* ---------------------------------------------------------------------
      Copiar e-mail
      --------------------------------------------------------------------- */
 
@@ -330,6 +371,7 @@
     initNavState();
     initScrollSpy();
     initReveal();
+    initWhatsAppFloat();
     initCopyEmail();
     initForm();
     initYear();

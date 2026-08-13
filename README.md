@@ -46,15 +46,15 @@ O grid se ajusta sozinho. As capas usam três variantes de cor: `work__cover--a`
 
 ### 2. Links sociais (obrigatório)
 
-Em `<ul class="socials">`, os três links estão como `href="#"`:
+Em `<ul class="socials">`, os dois links estão como `href="#"`:
 
 ```html
 <a href="https://github.com/SEU-USUARIO" rel="noopener">
 <a href="https://linkedin.com/in/SEU-PERFIL" rel="noopener">
-<a href="https://wa.me/55DDDNUMERO" rel="noopener">
 ```
 
 Se não quiser algum deles, apague o `<li>` correspondente.
+O WhatsApp já está configurado (veja abaixo).
 
 ### 3. URL canônica e imagem social
 
@@ -70,6 +70,47 @@ No `<head>`:
 Bio, serviços e processo foram escritos com base nas informações fornecidas.
 Revise o tom e ajuste o que não corresponder à sua realidade — principalmente a
 seção **Serviços**, que descreve o que você se propõe a entregar.
+
+---
+
+## WhatsApp
+
+Número configurado: **(47) 99648-2391** → `+55 47 99648-2391` → `wa.me/5547996482391`.
+
+Aparece em três lugares, **todos com a mesma URL**:
+
+1. Botão principal na seção de contato (`.wa`)
+2. Linha "WhatsApp" da ficha técnica, na seção Sobre
+3. Botão flutuante, que surge após o hero e some quando o botão principal
+   entra na tela
+
+### Mensagem pré-preenchida
+
+O parâmetro `?text=` é o que o **visitante envia para você** — não é uma
+mensagem sua para ele. Por isso está escrita na voz do cliente:
+
+> Olá, Pedro! Vi seu portfólio e gostei do seu trabalho. Tenho um projeto em
+> mente e gostaria de conversar sobre ele.
+
+Ela é curta de propósito: mensagens longas o visitante apaga antes de enviar.
+
+Para mudar o texto, gere a URL codificada (não escreva os acentos direto no
+`href`):
+
+```bash
+node -e "console.log(encodeURIComponent('Sua nova mensagem aqui'))"
+```
+
+Cole o resultado depois de `?text=` **nas três ocorrências** em `index.html`.
+Elas precisam continuar idênticas.
+
+### Trocar o número
+
+Substitua `5547996482391` nos três links e o `telephone` no bloco JSON-LD.
+O formato é país + DDD + número, só dígitos, sem `+` nem espaços.
+
+> Publicar o número expõe ele a coleta automatizada e spam. É o padrão para
+> quem vende serviço, mas vale saber.
 
 ---
 

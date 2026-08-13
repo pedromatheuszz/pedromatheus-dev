@@ -68,6 +68,7 @@
   --a3-soft:   rgba(224, 116, 90, 0.13);
   --ok:        #64c98a;
   --ok-soft:   rgba(100, 201, 138, 0.13);
+  --on-ok:     #06110b;   /* texto sobre --ok: verde claro pede texto escuro */
 
   --on-accent: #16120a;
   --grid:      rgba(255, 255, 255, 0.032);
@@ -106,6 +107,7 @@
   --a3-soft:   rgba(184, 80, 58, 0.10);
   --ok:        #237a4a;
   --ok-soft:   rgba(35, 122, 74, 0.10);
+  --on-ok:     #ffffff;   /* verde escuro pede texto claro */
 
   --on-accent: #ffffff;
   --grid:      rgba(20, 22, 26, 0.045);
@@ -705,6 +707,12 @@ p { text-wrap: pretty; }
   color: var(--ink);
   overflow-wrap: anywhere;
 }
+.spec__link {
+  border-bottom: 1px solid var(--line-2);
+  padding-bottom: 1px;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.spec__link:hover { color: var(--ok); border-color: var(--ok); }
 
 /* --- Stack --- */
 .stack {
@@ -893,6 +901,108 @@ p { text-wrap: pretty; }
 .contact__aside > p {
   max-width: 50ch;
   color: var(--ink-2);
+}
+
+/* --- WhatsApp: canal primário ---
+   Usa o verde --ok, que já existe na paleta, em vez do verde da marca
+   WhatsApp — mantém a coerência cromática do resto da página. */
+.wa {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+  padding: var(--sp-4) var(--sp-5);
+  border: 1px solid color-mix(in srgb, var(--ok) 38%, var(--line));
+  border-radius: var(--radius);
+  background: var(--ok-soft);
+  transition: border-color var(--dur) var(--ease),
+              background-color var(--dur) var(--ease),
+              transform 120ms var(--ease);
+}
+.wa:hover {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 16%, transparent);
+}
+.wa:active { transform: translateY(1px); }
+
+.wa__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--ok);
+  color: var(--on-ok);
+}
+.wa__icon svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wa__body { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.wa__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ok);
+}
+.wa__number {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.wa__hint { font-size: var(--fs-xs); color: var(--ink-2); }
+
+.wa__arrow {
+  flex: none;
+  margin-left: auto;
+  color: var(--ok);
+  transition: transform var(--dur) var(--ease);
+}
+.wa:hover .wa__arrow { transform: translateX(4px); }
+
+/* --- WhatsApp: atalho flutuante --- */
+.wa-float {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.15rem;
+  border-radius: 100px;
+  background: var(--ok);
+  color: var(--on-ok);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  box-shadow: 0 6px 22px -6px color-mix(in srgb, var(--ok) 60%, transparent),
+              0 2px 6px rgba(0, 0, 0, .25);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(.96);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease),
+              visibility 260ms, filter var(--dur) var(--ease);
+}
+.wa-float.is-shown { opacity: 1; visibility: visible; transform: none; }
+.wa-float:hover { filter: brightness(1.08); }
+.wa-float svg {
+  width: 21px;
+  height: 21px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .contact__email { margin-top: var(--sp-6); }
@@ -1116,6 +1226,16 @@ p { text-wrap: pretty; }
   .spec__row { grid-template-columns: 1fr; gap: 0.15rem; }
   .sec-head { flex-wrap: wrap; }
   .footer__inner { flex-direction: column; align-items: flex-start; }
+
+  /* Em telas pequenas o atalho vira só o ícone, para não cobrir o conteúdo. */
+  .wa-float { padding: 0; width: 54px; height: 54px; justify-content: center; }
+  .wa-float__text { display: none; }
+  .wa-float svg { width: 25px; height: 25px; }
+
+  .wa { padding: var(--sp-4); gap: var(--sp-3); }
+  .wa__icon { width: 40px; height: 40px; }
+  .wa__icon svg { width: 22px; height: 22px; }
+  .wa__arrow { display: none; }
 }
 
 /* --------------------------------------------------------------------------

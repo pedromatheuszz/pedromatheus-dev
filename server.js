@@ -1,0 +1,163 @@
+/**
+ * Servidor estático sem dependências (apenas Node.js nativo).
+ *
+ * Serve os arquivos desta pasta. Feito para plataformas que hospedam
+ * processos (Discloud, Render, Railway, Fly.io) — todas injetam a porta
+ * pela variável de ambiente PORT.
+ *
+ *   node server.js
+ */
+
+'use strict';
+
+const http = require('node:http');
+const fs = require('node:fs');
+const fsp = require('node:fs/promises');
+const path = require('node:path');
+const { pipeline } = require('node:stream/promises');
+
+const PORT = Number(process.env.PORT) || 8080;
+const HOST = process.env.HOST || '0.0.0.0';
+const ROOT = __dirname;
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+  '.gif': 'image/gif',
+  '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
+};
+
+// Arquivos que nunca devem ser servidos, mesmo se estiverem na pasta.
+const BLOCKED = new Set(['.git', '.env', '.gitignore', '.gitattributes', 'server.js', 'discloud.config']);
+
+/**
+ * Converte a URL recebida em um caminho absoluto seguro dentro de ROOT.
+ * Retorna null se a requisição tentar escapar da pasta (path traversal).
+ */
+function resolveSafePath(requestUrl) {
+  let pathname;
+  try {
+    pathname = decodeURIComponent(new URL(requestUrl, 'http://localhost').pathname);
+  } catch {
+    return null; // percent-encoding inválido
+  }
+
+  if (pathname.includes('\0')) return null;
+  if (pathname.endsWith('/')) pathname += 'index.html';
+
+  const absolute = path.resolve(ROOT, '.' + pathname);
+  const relative = path.relative(ROOT, absolute);
+
+  // Fora da raiz, ou subindo com "..": rejeita.
+  if (relative.startsWith('..') || path.isAbsolute(relative)) return null;
+
+  const [firstSegment] = relative.split(path.sep);
+  if (BLOCKED.has(firstSegment)) return null;
+
+  return absolute;
+}
+
+function cacheControlFor(ext) {
+  // O HTML precisa revalidar para o conteúdo novo aparecer após um deploy.
+  if (ext === '.html' || ext === '') return 'no-cache';
+  return 'public, max-age=3600';
+}
+
+function sendError(res, status, message) {
+  const body = `<!doctype html><html lang="pt-BR"><meta charset="utf-8">
+<title>${status}</title>
+<body style="font:16px/1.6 system-ui,sans-serif;background:#0b0c0f;color:#eceef1;
+display:grid;place-items:center;height:100vh;margin:0;text-align:center">
+<div><h1 style="font-size:3rem;margin:0 0 .5rem">${status}</h1>
+<p style="color:#a6adb8">${message}</p>
+<p><a href="/" style="color:#e8a33d">Voltar ao início</a></p></div>`;
+
+  res.writeHead(status, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
+  });
+  res.end(body);
+}
+
+async function handle(req, res) {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { Allow: 'GET, HEAD' });
+    return res.end();
+  }
+
+  const filePath = resolveSafePath(req.url);
+  if (!filePath) return sendError(res, 403, 'Acesso negado.');
+
+  let stats;
+  try {
+    stats = await fsp.stat(filePath);
+  } catch {
+    return sendError(res, 404, 'Página não encontrada.');
+  }
+
+  // Diretório sem barra final: redireciona para a versão canônica.
+  if (stats.isDirectory()) {
+    const location = new URL(req.url, 'http://localhost').pathname + '/';
+    res.writeHead(301, { Location: location });
+    return res.end();
+  }
+
+  const ext = path.extname(filePath).toLowerCase();
+  const etag = `W/"${stats.size}-${stats.mtimeMs}"`;
+
+  if (req.headers['if-none-match'] === etag) {
+    res.writeHead(304);
+    return res.end();
+  }
+
+  res.writeHead(200, {
+    'Content-Type': MIME[ext] || 'application/octet-stream',
+    'Content-Length': stats.size,
+    'Cache-Control': cacheControlFor(ext),
+    ETag: etag,
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'SAMEORIGIN',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+  });
+
+  if (req.method === 'HEAD') return res.end();
+
+  try {
+    await pipeline(fs.createReadStream(filePath), res);
+  } catch {
+    res.destroy(); // cliente desconectou no meio do envio
+  }
+}
+
+const server = http.createServer(function (req, res) {
+  handle(req, res).catch(function (err) {
+    console.error('Erro ao processar %s: %s', req.url, err.message);
+    if (!res.headersSent) sendError(res, 500, 'Erro interno.');
+    else res.destroy();
+  });
+});
+
+server.listen(PORT, HOST, function () {
+  console.log('Servindo %s em http://%s:%d', ROOT, HOST, PORT);
+});
+
+// Encerramento limpo — evita que a plataforma mate o processo à força.
+for (const signal of ['SIGTERM', 'SIGINT']) {
+  process.on(signal, function () {
+    console.log('%s recebido, encerrando...', signal);
+    server.close(function () { process.exit(0); });
+  });
+}

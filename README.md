@@ -44,19 +44,7 @@ Para adicionar mais projetos, duplique o bloco `<article class="work">` inteiro.
 O grid se ajusta sozinho. As capas usam três variantes de cor: `work__cover--a`
 (âmbar), `--b` (ciano) e `--c` (terracota).
 
-### 2. Links sociais (obrigatório)
-
-Em `<ul class="socials">`, os dois links estão como `href="#"`:
-
-```html
-<a href="https://github.com/SEU-USUARIO" rel="noopener">
-<a href="https://linkedin.com/in/SEU-PERFIL" rel="noopener">
-```
-
-Se não quiser algum deles, apague o `<li>` correspondente.
-O WhatsApp já está configurado (veja abaixo).
-
-### 3. URL canônica e imagem social
+### 2. URL canônica e imagem social
 
 No `<head>`:
 
@@ -65,7 +53,7 @@ No `<head>`:
   de **1200×630 px** na raiz do projeto. Sem ele, o link compartilhado no
   WhatsApp/LinkedIn aparece sem imagem.
 
-### 4. Conferir os textos
+### 3. Conferir os textos
 
 Bio, serviços e processo foram escritos com base nas informações fornecidas.
 Revise o tom e ajuste o que não corresponder à sua realidade — principalmente a

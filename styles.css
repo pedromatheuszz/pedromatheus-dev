@@ -1049,28 +1049,6 @@ p { text-wrap: pretty; }
 .copy-btn:hover { color: var(--ink); border-color: var(--line-2); }
 .copy-btn.is-done { color: var(--ok); border-color: var(--ok); }
 
-.socials {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  list-style: none;
-  padding: 0;
-  margin-top: var(--sp-6);
-}
-.socials a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.9rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-sm);
-  font-weight: 500;
-  color: var(--ink-2);
-  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
-}
-.socials a:hover { color: var(--ink); border-color: var(--line-2); }
-
 /* --- Formulário --- */
 .form {
   display: flex;
@@ -1243,7 +1221,7 @@ p { text-wrap: pretty; }
    -------------------------------------------------------------------------- */
 
 @media print {
-  .nav, .hero__grid-bg, .form, .socials, .footer__top { display: none !important; }
+  .nav, .hero__grid-bg, .form, .wa-float, .footer__top { display: none !important; }
   body { background: #fff; color: #000; }
   .section { break-inside: avoid; border-top: 1px solid #ccc; }
   .js [data-reveal] { opacity: 1 !important; transform: none !important; }

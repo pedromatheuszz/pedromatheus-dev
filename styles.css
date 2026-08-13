@@ -433,6 +433,11 @@ p { text-wrap: pretty; }
 .nav__links a.is-active { color: var(--ink); }
 .nav__links a.is-active::after { transform: scaleX(1); }
 
+/* Link que sai do site: a seta diagonal avisa antes do clique. */
+.nav__ext { display: inline-flex; align-items: center; gap: 0.3em; }
+.nav__ext .icon { width: 0.85em; height: 0.85em; opacity: 0.65; }
+.nav__ext:hover .icon { opacity: 1; }
+
 .nav__actions { display: flex; align-items: center; gap: 0.6rem; }
 .nav__burger { display: none; flex-direction: column; gap: 4px; }
 .nav__burger span {

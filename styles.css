@@ -46,8 +46,8 @@
 }
 
 /* --- Tema escuro (padrão) ---
-   Cores extraídas dos pixels do logotipo: fundo #040404, branco #eff0f2 e
-   azul da marca #5460f0, cujo gradiente vai de #4878f0 a #6054fc. */
+   Cores extraídas dos pixels do logotipo: fundo #000000, branco #f2f2f3 e
+   azul da marca #3c48fc, cujo gradiente vai de #4f3afc a #3467f9. */
 :root,
 [data-theme="dark"] {
   --bg:        #08090d;
@@ -55,18 +55,18 @@
   --surface:   #10131a;
   --surface-2: #171b24;
 
-  --ink:       #eff0f2;   /* o branco do logotipo */
+  --ink:       #f2f2f3;   /* o branco do logotipo */
   --ink-2:     #a4aab8;
   --ink-3:     #7b8293;
 
   --line:      #212530;
   --line-2:    #2c313e;
 
-  --a1:        #5460f0;   /* azul da marca — preenchimentos, botões, ícones */
-  --a1-soft:   rgba(84, 96, 240, 0.16);
-  /* O azul da marca rende 4.08:1 sobre este fundo, abaixo do mínimo AA de 4.5.
-     Para TEXTO usamos uma variação clareada da mesma cor: 6.24:1. */
-  --a1-text:   #7b86f6;
+  --a1:        #3c48fc;   /* azul da marca — preenchimentos, botões, ícones */
+  --a1-soft:   rgba(60, 72, 252, 0.16);
+  /* O azul da marca rende 3.34:1 sobre este fundo, abaixo do mínimo AA de 4.5.
+     Para TEXTO usamos uma variação clareada da mesma cor: 5.90:1. */
+  --a1-text:   #767ffd;
   --a2:        #3ec2e8;   /* ciano — secundário, separa front de back */
   --a2-soft:   rgba(62, 194, 232, 0.14);
   --a3:        #e8a33d;   /* âmbar — contraponto quente ao azul */
@@ -84,7 +84,7 @@
   --c-key:  #b09cf8;
   --c-type: #3ec2e8;
   --c-str:  #9fcf8e;
-  --c-var:  #7d86f5;
+  --c-var:  #767ffd;
   --c-def:  #b7becb;
 
   color-scheme: dark;
@@ -106,9 +106,9 @@
   --line:      #e0e3ec;
   --line-2:    #c8cddb;
 
-  --a1:        #3a44cc;   /* azul da marca, escurecido para o papel */
-  --a1-soft:   rgba(58, 68, 204, 0.10);
-  --a1-text:   #3a44cc;   /* no claro o próprio acento já rende 6.81:1 */
+  --a1:        #333dcf;   /* azul da marca, escurecido para o papel */
+  --a1-soft:   rgba(51, 61, 207, 0.10);
+  --a1-text:   #333dcf;   /* no claro o próprio acento já rende 7.24:1 */
   --a2:        #0c6f85;
   --a2-soft:   rgba(12, 111, 133, 0.10);
   --a3:        #8c5608;
@@ -125,7 +125,7 @@
   --c-key:  #6b34c9;
   --c-type: #0e6f85;
   --c-str:  #43701f;
-  --c-var:  #3a44cc;
+  --c-var:  #333dcf;
   --c-def:  #39404b;
 
   color-scheme: light;
@@ -397,7 +397,6 @@ p { text-wrap: pretty; }
   font-weight: 600;
   letter-spacing: -0.015em;
 }
-.brand__tld { color: var(--a1-text); }
 .brand__text span {
   font-family: var(--font-mono);
   font-size: 0.6875rem;

@@ -121,15 +121,21 @@ var DESTINATARIO = 'pedromatheusdasilva123@gmail.com';
 
 | Arquivo | Tamanho | Onde é usado |
 |---------|---------|--------------|
-| `logo-mark.png` | 512×512 | Monograma no topo e no rodapé |
-| `logo.png` | 969×624 | Logotipo completo, para reuso |
+| `logo-mark.png` | 192×192 | Monograma no topo e no rodapé |
+| `logo.png` | 986×766 | Logotipo completo, para reuso |
 | `og-image.png` | 1200×630 | Prévia ao compartilhar o link |
 | `apple-touch-icon.png` | 180×180 | Ícone ao salvar na tela inicial |
 | `favicon.png` | 64×64 | Ícone da aba |
+| `logo-original.png` | 1254×1254 | Arquivo-fonte, não usado pela página |
 
-Todos foram recortados do arquivo original. Para regerá-los depois de alterar o
-logotipo, os recortes usados foram: monograma em `x 354, y 309, 542×507` e
-logotipo completo em `x 183, y 343, 909×564`.
+O monograma é exibido a 36px e tem 192px justamente para não pesar: uma versão
+512px ficava com 201 KB, mais que HTML, CSS e JS somados.
+
+Todos foram recortados de `logo-original.png` (1254×1254). Para regerá-los
+depois de alterar o logotipo, os recortes usados foram: monograma em
+`x 320, y 223, 622×571` e logotipo completo em `x 137, y 227, 986×766`.
+O recorte do monograma para propositalmente antes do texto, que começa em
+`y ≈ 800`.
 
 O monograma mantém o fundo escuro do logotipo **nos dois temas**. Isso é
 intencional: o "P" é branco e sumiria sobre o papel claro. No tema claro ele
@@ -141,22 +147,22 @@ As cores vieram dos pixels do próprio logotipo:
 
 | Origem | Valor |
 |--------|-------|
-| Fundo do logotipo | `#040404` |
-| Branco do logotipo | `#eff0f2` |
-| Azul da marca | `#5460f0` |
-| Gradiente do "M" | `#4878f0` → `#6054fc` |
+| Fundo do logotipo | `#000000` |
+| Branco do logotipo | `#f2f2f3` |
+| Azul da marca | `#3c48fc` |
+| Gradiente do "M" | `#4f3afc` → `#3467f9` |
 
 Os tokens ficam no topo do `styles.css`:
 
 ```css
-[data-theme="dark"]  { --a1: #5460f0; --a1-text: #7b86f6; }
-[data-theme="light"] { --a1: #3a44cc; --a1-text: #3a44cc; }
+[data-theme="dark"]  { --a1: #3c48fc; --a1-text: #767ffd; }
+[data-theme="light"] { --a1: #333dcf; --a1-text: #333dcf; }
 ```
 
-**Por que dois tokens de azul.** O azul da marca rende apenas 4.08:1 sobre o
+**Por que dois tokens de azul.** O azul da marca rende apenas 3.34:1 sobre o
 fundo escuro, abaixo do mínimo de 4.5:1 da WCAG AA. `--a1` é usado em
 preenchimentos (botões, ícones, o ponto das etapas), onde a exigência é menor;
-`--a1-text` é uma variação clareada da mesma cor, com 6.24:1, usada em todo
+`--a1-text` é uma variação clareada da mesma cor, com 5.90:1, usada em todo
 texto. Se trocar um, ajuste o outro e remeça o contraste.
 
 A paleta tem três eixos: `--a1` (azul da marca), `--a2` (ciano) e `--a3`
@@ -166,6 +172,22 @@ achatar em uma cor só.
 O tema inicial segue a preferência do sistema operacional e é persistido em
 `localStorage` sob a chave `pm-theme`. A meta tag `theme-color` lê `--bg` do
 CSS em tempo de execução, então não precisa ser atualizada à mão.
+
+---
+
+## Cache
+
+O `server.js` envia `Cache-Control: no-cache` em **tudo**, inclusive imagens.
+Isso não desliga o cache: manda o navegador revalidar, e o ETag responde com um
+304 vazio quando nada mudou.
+
+O padrão da indústria seria cachear imagem por dias, mas isso pressupõe nomes
+versionados (`logo.a1b2c3.png`), que um site sem build não tem. Sem isso, trocar
+o logotipo deixaria quem já visitou vendo o antigo até o cache expirar.
+
+Se publicar em GitHub Pages, Netlify ou Cloudflare, quem manda é a política
+**deles**, não este arquivo. Nessas plataformas, a forma confiável de forçar
+atualização de uma imagem é renomear o arquivo.
 
 ---
 

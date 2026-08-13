@@ -70,18 +70,15 @@ function resolveSafePath(requestUrl) {
   return absolute;
 }
 
-// Imagens e fontes podem ser cacheadas com folga: mudam raramente e, quando
-// mudam, normalmente ganham outro nome de arquivo.
-const CACHE_LONGO = new Set([
-  '.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.ico', '.woff', '.woff2',
-]);
-
-function cacheControlFor(ext) {
-  // HTML, CSS e JS mudam a cada deploy e são interdependentes: se o HTML for
-  // atualizado mas o CSS vier do cache, a página quebra. "no-cache" nao
-  // significa "nao cacheie" — significa "cacheie, mas revalide sempre".
-  // Com o ETag, a revalidacao custa um 304 vazio.
-  if (CACHE_LONGO.has(ext)) return 'public, max-age=86400';
+// "no-cache" nao significa "nao cacheie" — significa "cacheie, mas revalide
+// sempre". Com o ETag, a revalidacao custa um 304 vazio.
+//
+// Vale para TUDO, inclusive imagens. O padrao seria cachear imagem por dias,
+// mas isso pressupoe nomes versionados (logo.a1b2c3.png), que um site sem
+// build nao tem. Sem isso, trocar o logotipo deixaria visitantes recorrentes
+// vendo o antigo ate o cache expirar. A unica imagem carregada pela pagina
+// tem 33 KB: pagar um 304 por visita e mais barato que servir conteudo velho.
+function cacheControlFor() {
   return 'no-cache';
 }
 
@@ -135,7 +132,7 @@ async function handle(req, res) {
   res.writeHead(200, {
     'Content-Type': MIME[ext] || 'application/octet-stream',
     'Content-Length': stats.size,
-    'Cache-Control': cacheControlFor(ext),
+    'Cache-Control': cacheControlFor(),
     ETag: etag,
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'SAMEORIGIN',

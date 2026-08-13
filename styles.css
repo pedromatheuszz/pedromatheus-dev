@@ -863,7 +863,26 @@ p { text-wrap: pretty; }
   color: var(--a1-text);
 }
 .work__link .icon { transition: transform var(--dur) var(--ease); }
-.work__link:hover .icon { transform: translateX(4px); }
+.work__link:hover .icon { transform: translate(3px, -3px); }
+
+.works__more {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.works__more a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  transition: color var(--dur) var(--ease);
+}
+.works__more a:hover { color: var(--a1-text); }
+.works__more .icon { transition: transform var(--dur) var(--ease); }
+.works__more a:hover .icon { transform: translate(3px, -3px); }
 
 /* --- Processo --- */
 .steps {

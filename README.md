@@ -28,28 +28,33 @@ Depois acesse `http://localhost:4321`.
 
 ---
 
-## ⚠️ O que você PRECISA editar antes de publicar
+## Projetos
 
-### 1. Projetos (obrigatório — conteúdo de exemplo)
+A seção `<section id="projetos">` lista três projetos reais, com descrições
+escritas a partir do que está nos repositórios:
 
-A seção `<section id="projetos">` contém **três cards de exemplo**. Eles estão
-marcados com um comentário `PLACEHOLDER` no HTML. Para cada `<article class="work">`:
+| Card | Repositório |
+|------|-------------|
+| Adri Poltronas | `pedromatheuszz/Adri-Poltronas` |
+| Routine | `pedromatheuszz/Routine` |
+| pedromatheus.dev | `pedromatheuszz/pedromatheus-dev` |
 
-- troque `.work__type`, `.work__title` e `.work__desc`;
-- ajuste os `<li>` dentro de `.chips`;
-- aponte o `href` de `.work__link` para o repositório ou site do projeto real
-  (hoje todos apontam para `#contato`).
+Para adicionar um projeto, duplique o bloco `<article class="work">` inteiro —
+o grid se ajusta sozinho. As capas usam três variantes de cor:
+`work__cover--a` (azul da marca), `--b` (ciano) e `--c` (âmbar).
 
-Para adicionar mais projetos, duplique o bloco `<article class="work">` inteiro.
-O grid se ajusta sozinho. As capas usam três variantes de cor: `work__cover--a`
-(âmbar), `--b` (ciano) e `--c` (terracota).
+Todos os links de projeto abrem em nova aba e precisam de `rel="noopener"`.
 
-### 2. URL canônica
+---
 
-No `<head>`, troque `<link rel="canonical" href="https://exemplo.com/">` pelo
-seu domínio real.
+## ⚠️ O que revisar antes de publicar
 
-### 3. Conferir os textos
+### 1. Domínio
+
+`canonical` e `og:url` apontam para `https://pedromatheus-dev-three.vercel.app/`.
+Se registrar um domínio próprio, troque **os dois** no `<head>`.
+
+### 2. Conferir os textos
 
 Bio, serviços e processo foram escritos com base nas informações fornecidas.
 Revise o tom e ajuste o que não corresponder à sua realidade — principalmente a

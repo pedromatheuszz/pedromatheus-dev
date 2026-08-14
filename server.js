@@ -40,8 +40,27 @@ const MIME = {
   '.webmanifest': 'application/manifest+json',
 };
 
-// Arquivos que nunca devem ser servidos, mesmo se estiverem na pasta.
-const BLOCKED = new Set(['.git', '.env', '.gitignore', '.gitattributes', 'server.js', 'discloud.config']);
+// Nomes que nunca devem ser servidos. A comparacao e feita em minusculas
+// porque Windows e macOS tem sistema de arquivos insensivel a caixa: sem isso,
+// /SERVER.JS escaparia da lista e entregaria o codigo-fonte.
+const BLOCKED_NAMES = new Set([
+  'server.js', 'discloud.config', 'package.json', 'package-lock.json',
+  'node_modules', 'dockerfile', 'procfile',
+]);
+
+// Todo arquivo ou pasta iniciado por ponto e bloqueado por regra, o que cobre
+// .git, .env, .gitignore e qualquer outro que apareca depois — enumerar um a um
+// deixaria brechas. Excecao para .well-known, padrao de verificacao de dominio.
+const DOTFILE_PERMITIDO = new Set(['.well-known']);
+
+/** Bloqueia se QUALQUER segmento do caminho for proibido, nao apenas o primeiro. */
+function isBlocked(relative) {
+  return relative.split(path.sep).some(function (segmento) {
+    const nome = segmento.toLowerCase();
+    if (nome.startsWith('.') && !DOTFILE_PERMITIDO.has(nome)) return true;
+    return BLOCKED_NAMES.has(nome);
+  });
+}
 
 /**
  * Converte a URL recebida em um caminho absoluto seguro dentro de ROOT.
@@ -64,8 +83,7 @@ function resolveSafePath(requestUrl) {
   // Fora da raiz, ou subindo com "..": rejeita.
   if (relative.startsWith('..') || path.isAbsolute(relative)) return null;
 
-  const [firstSegment] = relative.split(path.sep);
-  if (BLOCKED.has(firstSegment)) return null;
+  if (isBlocked(relative)) return null;
 
   return absolute;
 }
@@ -83,13 +101,15 @@ function cacheControlFor() {
 }
 
 function sendError(res, status, message) {
+  // Cores espelham os tokens de styles.css (tema escuro). Se a paleta mudar,
+  // atualize aqui: esta pagina e autonoma e nao carrega o CSS do site.
   const body = `<!doctype html><html lang="pt-BR"><meta charset="utf-8">
 <title>${status}</title>
-<body style="font:16px/1.6 system-ui,sans-serif;background:#0b0c0f;color:#eceef1;
+<body style="font:16px/1.6 system-ui,sans-serif;background:#08090d;color:#f2f2f3;
 display:grid;place-items:center;height:100vh;margin:0;text-align:center">
 <div><h1 style="font-size:3rem;margin:0 0 .5rem">${status}</h1>
-<p style="color:#a6adb8">${message}</p>
-<p><a href="/" style="color:#e8a33d">Voltar ao início</a></p></div>`;
+<p style="color:#a4aab8">${message}</p>
+<p><a href="/" style="color:#767ffd">Voltar ao início</a></p></div>`;
 
   res.writeHead(status, {
     'Content-Type': 'text/html; charset=utf-8',
